@@ -195,6 +195,7 @@ input, select, textarea {
 		}
 
 			a.special:not(.button):before {
+				-moz-transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
 				display: inline-block;
@@ -2085,6 +2086,7 @@ input, select, textarea {
 
 	section.special, article.special {
 		text-align: center;
+
 	}
 
 /* Form */
