@@ -6,6 +6,8 @@ import re
 
 for line in sys.stdin: #Para cada linea
 
+    line = re.sub( r'^\W+|\W+$', '', line)
+
     #Hace un array con las palabras de la linea.
     #Tiene en cuenta la coma para separar los elementos
     words = re.split(r"[;]", line)
