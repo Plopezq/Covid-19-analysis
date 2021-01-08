@@ -4,6 +4,7 @@
 import sys
 import re
 
+print("Sexo;Edad;Provincias;Periodo;Total")
 for line in sys.stdin: #Para cada linea
 
     line = re.sub( r'^\W+|\W+$', '', line)
@@ -15,7 +16,7 @@ for line in sys.stdin: #Para cada linea
     #Ahora de la columna anyo, me quedo solo con las filas que tengan 2020
     if "2020" in words[3]:
         #Voy a eliminar todas las tildes
-        for i in range(4):
+        for i in range(5):
             words[i] = words[i].lower()
 
             words[i] = words[i].replace('á', 'a')
@@ -34,4 +35,4 @@ for line in sys.stdin: #Para cada linea
 
         for j in range(4):
             print (words[j] + ";", end = "")
-        print()
+        print(words[4])
