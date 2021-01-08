@@ -1,4 +1,4 @@
-#!/usr/bin/pyhton3
+#!/usr/bin/pyhton
 # -*- coding: utf-8 -*-
 
 from pyspark import SparkConf, SparkContext
@@ -11,11 +11,13 @@ ss = SparkSession(sc)
 data = ss.read.csv('../DataSets/INE/autobus_urbano_comunidades.csv',
 	header=True, sep=';')
 
-# CCAA, Viajeros y tasas, Periodo, Total
 # CCAA, viajeros_y_tasas, Periodo, Total
-data = data.withColumnRenamed('viajeros_y_tasas', 'Viajeros y tasas')
 
-data = data.viajeros_y_tasas.contains('Variación anual').show()
+data.show()
+
+data = data.filter(data['viajeros_y_tasas'].encode('utf-8') == 'Variación anual')
+
+data.show()
 
 data = data.drop('Viajeros y tasas')
 
