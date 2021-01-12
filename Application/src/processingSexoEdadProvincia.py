@@ -23,11 +23,19 @@ df3 = df2.withColumn("Total",df2["Total"].cast(DoubleType()))
 df4 = df3.withColumn('Periodo', split(df['Periodo'], ' ').getItem(4))
 df5 = df4.withColumn("Periodo",df4["Periodo"].cast(DoubleType()))
 
-df6 = df5.filter(df5['Periodo'] > 2019)
-
+df6 = df5.filter(df5['Periodo'] > 2019) #DataSet con todas las provincias y el anyo 2020
 
 #Sacar un dataframe por cada comunidad
 MADRID = df6.filter(df6['Provincias'] == "28 madrid")
+
+almeria = df6.filter(df6['Provincias'] == "04 almeria")
+cadiz = df6.filter(df6['Provincias'] == "11 cadiz")
+cordoba = df6.filter(df6['Provincias'] == "14 cordoba")
+granada = df6.filter(df6['Provincias'] == "18 granada")
+huelva = df6.filter(df6['Provincias'] == "21 huelva")
+jaen = df6.filter(df6['Provincias'] == "23 jaen")
+malaga = df6.filter(df6['Provincias'] == "29 malaga")
+sevilla = df6.filter(df6['Provincias'] == "41 sevilla").show()
 
 
 

@@ -1,15 +1,15 @@
 def getCCAA(provincia):
 	# TODO lowercase and probably this should be in a class
 	dict = {
-		'álava' : 'país vasco', 'araba/álava' : 'país vasco',
+		'alava' : 'pais vasco', 'araba/alava' : 'pais vasco',
 		'albacete' : 'castilla-la mancha',
 		'alicante' : 'comunidad valenciana',
-		'almería' : 'andalucía',
+		'almeria' : 'andalucia',
 		'asturias' : 'principado de asturias',
-		'ávila' : 'castilla y león',
+		'avila' : 'castilla y leon',
 		'badajoz' : 'extremadura',
 		'barcelona' : 'cataluña',
-		'burgos' : 'castilla y león',
+		'burgos' : 'castilla y leon',
 		'cáceres' : 'extremadura',
 		'cádiz' : 'andalucía',
 		'cantabria' : 'cantabria',
