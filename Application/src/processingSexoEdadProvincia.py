@@ -25,17 +25,20 @@ df5 = df4.withColumn("Periodo",df4["Periodo"].cast(DoubleType()))
 
 df6 = df5.filter(df5['Periodo'] > 2019) #DataSet con todas las provincias y el anyo 2020
 
-#Sacar un dataframe por cada comunidad
-MADRID = df6.filter(df6['Provincias'] == "28 madrid")
 
-almeria = df6.filter(df6['Provincias'] == "04 almeria")
-cadiz = df6.filter(df6['Provincias'] == "11 cadiz")
-cordoba = df6.filter(df6['Provincias'] == "14 cordoba")
-granada = df6.filter(df6['Provincias'] == "18 granada")
-huelva = df6.filter(df6['Provincias'] == "21 huelva")
-jaen = df6.filter(df6['Provincias'] == "23 jaen")
-malaga = df6.filter(df6['Provincias'] == "29 malaga")
-sevilla = df6.filter(df6['Provincias'] == "41 sevilla").show()
+
+
+
+""" from pandas import DataFrame
+import matplotlib.pyplot as plt
+
+datos2 = {'Año': [1920,1930,1940,1950,1960,1970,1980,1990,2000,2010],
+        'Tasa de desempleo': [9.8,12,8,7.2,6.9,7,6.5,6.2,5.5,6.3]
+       }
+
+df = DataFrame(datos2,columns=['Año','Tasa de desempleo'])
+df.plot(x ='Año', y='Tasa de desempleo', kind = 'line')#Tipo lineal con los ejes nombrados
+plt.show() """
 
 
 
