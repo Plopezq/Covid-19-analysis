@@ -13,6 +13,15 @@ for line in sys.stdin: #Para cada linea
     #Tiene en cuenta la coma para separar los elementos
     words = re.split(r"[;]", line)
 
+
+    #Para eliminar los numeros
+    for i in range(10):
+        words[2] = words[2].replace(str(i),'')
+
+    #Para eliminar el espacio inicial
+    if words[2][0] == " " :
+        words[2] = words[2][1:]
+
     #Ahora de la columna anyo, me quedo solo con las filas que tengan 2020
     if "2020" in words[3]:
         #Voy a eliminar todas las tildes
