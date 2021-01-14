@@ -39,10 +39,16 @@ class Util:
 	ce = CCAA('ceuta', 'Ceuta')
 	ml = CCAA('melilla', 'Melilla')
 
+	tn = CCAA('total nacional', 'Total Nacional')
+
+	ce = CCAA('ceuta', 'Ceuta')
+	ml = CCAA('melilla', 'Melilla')
+
 	dict = {
+		'total nacional' : tn,
 		'alava' : pv, 'araba/alava' : pv,
 		'albacete' : cm,
-		'alicante' : vc,
+		'alicante' : vc, 'alicante/alacant' :vc,
 		'almeria' : an,
 		'asturias' : ast,
 		'avila' : cl,
@@ -52,31 +58,31 @@ class Util:
 		'caceres' : ex,
 		'cadiz' : an,
 		'cantabria' : cb,
-		'castellon' : vc,
+		'castellon' : vc, 'castellon/castello' : vc,
 		'ciudad real' : cm,
 		'cordoba' : an,
 		'la coruña' : ga, 'corunya, a' : ga,
 		'cuenca' : cm,
-		'gerona' : ct,
+		'gerona' : ct, 'girona' : ct,
 		'granada' : an,
 		'guadalajara' : cm,
-		'guipuzcoa' : pv,
+		'guipuzcoa' : pv, 'gipuzkoa' : pv,
 		'huelva' : an,
 		'huesca' : ar,
-		'baleares' : ib,
+		'baleares' : ib, 'balears, illes' : ib,
 		'jaen' : an,
 		'leon' : cl,
-		'lerida' : ct,
+		'lerida' : ct, 'lleida' : ct,
 		'lugo' : ga,
 		'madrid' : md,
 		'malaga' : an,
 		'murcia' : mc,
 		'navarra' : nc,
-		'orense' : ga,
+		'orense' : ga, 'ourense' : ga,
 		'palencia' : cl,
-		'las palmas' : cn,
+		'las palmas' : cn, 'palmas, las' : cn,
 		'pontevedra' : ga,
-		'la rioja' : ri,
+		'la rioja' : ri, 'rioja, la' : ri,
 		'salamanca' : cl,
 		'segovia' : cl,
 		'sevilla' : an,
@@ -85,16 +91,18 @@ class Util:
 		'santa cruz de tenerife' : cn,
 		'teruel' : ar,
 		'toledo' : cm,
-		'valencia' : vc,
+		'valencia' : vc, 'valencia/valencia': vc,
 		'valladolid' : cl,
-		'vizcaya' : pv,
+		'vizcaya' : pv, 'bizkaia' : pv,
 		'zamora' : cl,
-		'zaragoza' : ar
+		'zaragoza' : ar,
 		# TODO ceuta and melilla
+		'ceuta' : ce,
+		'melilla': ml
 	}
-	
+
 	def getCCAA(self, provincia):
 		if provincia not in self.dict:
-			return CCAA('ERROR', 'ERROR')
+			return CCAA('ERROR ' + provincia, 'ERROR ' + provincia)
 		else:
 			return self.dict[provincia.lower()]

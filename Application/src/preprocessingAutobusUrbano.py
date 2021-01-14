@@ -22,4 +22,3 @@ data.show()
 data = data.drop('Viajeros y tasas')
 
 data.show()
-
