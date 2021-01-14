@@ -6,6 +6,8 @@ import string
 import re
 from pyspark.sql.functions import *
 from pyspark.sql import functions as F
+from pyspark.sql.functions import UserDefinedFunction
+from pyspark.sql.types import StringType
 
 #import pandas as pd
 from pyspark.sql.types import *
@@ -32,9 +34,9 @@ df6 = df5.filter(df5['Periodo'] > 2019) #DataSet con todas las provincias y el a
 
 u = Util()
 
-for prov, comunidad in dict.items(u.dict):
-    update_func = F.when(F.col('Provincias') == prov, comunidad.nombre).otherwise(F.col("col2"))
-    df6 = df6.withColumn('Provincias', update_func)
+# COLUMNA Provincias
+f = UserDefinedFunction(lambda x: u.getCCAA(x).nombre, StringType())
+df6 = df6.withColumn('Provincias', f(df6.Provincias))
 
 df6.show()
 
