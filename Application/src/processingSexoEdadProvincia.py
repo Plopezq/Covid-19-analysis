@@ -1,9 +1,12 @@
 #!/usr/bin/pyhton3
 # -*- coding: utf-8 -*-
+from util import *
 from pyspark import SparkConf, SparkContext
 import string
 import re
 from pyspark.sql.functions import *
+from pyspark.sql import functions as F
+
 #import pandas as pd
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
@@ -25,26 +28,98 @@ df5 = df4.withColumn("Periodo",df4["Periodo"].cast(DoubleType()))
 
 df6 = df5.filter(df5['Periodo'] > 2019) #DataSet con todas las provincias y el anyo 2020
 
+#Convierto el dataframe para que muestre las comunidades y no las provincias
+
+u = Util()
+
+for i in range(len(u.dict)):
+    replace_val = dict[i]
+    new_value = u.getCCAA(replace_val).nombre
+    update_func = (F.when(F.col('Provincias') == replace_val, new_value)
+                    .otherwise(F.col('Provincias')))
+    df7 = df6.withColumn('Provincias', update_func)
+
+
+df7.show()
 
 
 
+class Util:
 
-""" from pandas import DataFrame
-import matplotlib.pyplot as plt
+	an = CCAA('andalucia', 'Andalucía')
+	ar = CCAA('aragon', 'Aragón')
+	ast = CCAA('asturias', 'Asturias') # 'as' is reserved
+	cn = CCAA('canarias', 'Canarias')
+	cb = CCAA('cantabria', 'Cantabria')
+	cl = CCAA('castilla y leon', 'Castilla y León')
+	cm = CCAA('castilla-la mancha', 'Castilla-La Mancha')
+	ct = CCAA('catalunya', 'Cataluña')
+	ex = CCAA('extremadura', 'Extremadura')
+	ga = CCAA('galicia', 'Galicia')
+	ib = CCAA('islas baleares', 'Islas Baleares')
+	ri = CCAA('la rioja', 'La Rioja')
+	md = CCAA('comunidad de madrid', 'Comunidad de Madrid')
+	mc = CCAA('murcia', 'Región de Murcia')
+	nc = CCAA('navarra', 'Navarra')
+	pv = CCAA('pais vasco', 'País Vasco')
+	vc = CCAA('comunidad valenciana', 'Comunidad Valenciana')
 
-datos2 = {'Año': [1920,1930,1940,1950,1960,1970,1980,1990,2000,2010],
-        'Tasa de desempleo': [9.8,12,8,7.2,6.9,7,6.5,6.2,5.5,6.3]
-       }
+	ce = CCAA('ceuta', 'Ceuta')
+	ml = CCAA('melilla', 'Melilla')
 
-df = DataFrame(datos2,columns=['Año','Tasa de desempleo'])
-df.plot(x ='Año', y='Tasa de desempleo', kind = 'line')#Tipo lineal con los ejes nombrados
-plt.show() """
-
-
-
-
-
-
+	dict = {
+		'alava' : pv, 'araba/alava' : pv,
+		'albacete' : cm,
+		'alicante' : vc,
+		'almeria' : an,
+		'asturias' : ast,
+		'avila' : cl,
+		'badajoz' : ex,
+		'barcelona' : ct,
+		'burgos' : cl,
+		'caceres' : ex,
+		'cadiz' : an,
+		'cantabria' : cb,
+		'castellon' : vc,
+		'ciudad real' : cm,
+		'cordoba' : an,
+		'corunya, a' : ga,
+		'cuenca' : cm,
+		'gerona' : ct,
+		'granada' : an,
+		'guadalajara' : cm,
+		'guipúzcoa' : pv,
+		'huelva' : an,
+		'huesca' : ar,
+		'baleares' : ib,
+		'jaen' : an,
+		'leon' : cl,
+		'lerida' : ct,
+		'lugo' : ga,
+		'madrid' : md,
+		'málaga' : an,
+		'murcia' : mc,
+		'navarra' : nc,
+		'orense' : ga,
+		'palencia' : cl,
+		'las palmas' : cn,
+		'pontevedra' : ga,
+		'la rioja' : ri,
+		'salamanca' : cl,
+		'segovia' : cl,
+		'sevilla' : an,
+		'soria' : cl,
+		'tarragona' : ct,
+		'santa cruz de tenerife' : cn,
+		'teruel' : ar,
+		'toledo' : cm,
+		'valencia' : vc,
+		'valladolid' : cl,
+		'vizcaya' : pv,
+		'zamora' : cl,
+		'zaragoza' : ar
+		# TODO ceuta and melilla
+	}
 #Convierto las provincias a comunidades
 #df6 = df5.filter(df5['Periodo'] > 2019).show()
 
