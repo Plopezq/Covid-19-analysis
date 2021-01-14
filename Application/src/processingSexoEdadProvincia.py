@@ -38,12 +38,13 @@ u = Util()
 f = UserDefinedFunction(lambda x: u.getCCAA(x).nombre, StringType())
 df6 = df6.withColumn('Provincias', f(df6.Provincias))
 
+#TODO renombrar la columna
 df6.show()
 
 #Convierto las provincias a comunidades
 #df6 = df5.filter(df5['Periodo'] > 2019).show()
 
-df6.coalesce(1).write.option("header", "true").option("sep", ";").csv("sample_file.csv")
+df6.coalesce(1).write.option("header", "true").option("sep", ";").csv("../dataSetsCleans/clean_sexo_edad_ccaa_anyo.csv")
 
 #df2020.show() #Para mostrarlo por pantalla
 
