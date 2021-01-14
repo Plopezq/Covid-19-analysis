@@ -43,7 +43,7 @@ df6.show()
 #Convierto las provincias a comunidades
 #df6 = df5.filter(df5['Periodo'] > 2019).show()
 
-#df7.coalesce(1).write.option("header", "true").option("sep", ";").csv("sample_file.csv")
+df6.coalesce(1).write.option("header", "true").option("sep", ";").csv("sample_file.csv")
 
 #df2020.show() #Para mostrarlo por pantalla
 
