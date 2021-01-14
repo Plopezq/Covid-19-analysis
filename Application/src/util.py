@@ -95,6 +95,6 @@ class Util:
 
 	def getCCAA(self, provincia):
 		if provincia not in self.dict:
-			return CCAA('ERROR', 'ERROR')
+			return CCAA('ERROR ' + provincia, 'ERROR ' + provincia)
 		else:
 			return self.dict[provincia.lower()]
