@@ -1,5 +1,12 @@
 # coding=utf-8
 
+# Usage:
+# from util import *
+# u = Util()
+# print(u.getCCAA('segovia').nombre_ISO)
+# print(u.getCCAA('ceuta').nombre_ISO)
+# print(u.getCCAA('madrid').nombre_ISO)
+
 class CCAA:
 	# no distinction between CCAA and Autonomous Cities
 	nombre = None
@@ -91,9 +98,3 @@ class Util:
 			return CCAA('ERROR', 'ERROR')
 		else:
 			return self.dict[provincia.lower()]
-
-# u = Util()
-# print(u.getCCAA('segovia').nombre_ISO)
-# print(u.getCCAA('ceuta').nombre_ISO)
-# print(u.getCCAA('madrid').nombre_ISO)
-
