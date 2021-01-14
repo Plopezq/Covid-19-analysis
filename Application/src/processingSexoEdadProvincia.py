@@ -32,94 +32,12 @@ df6 = df5.filter(df5['Periodo'] > 2019) #DataSet con todas las provincias y el a
 
 u = Util()
 
-for i in range(len(u.dict)):
-    replace_val = dict[i]
-    new_value = u.getCCAA(replace_val).nombre
-    update_func = (F.when(F.col('Provincias') == replace_val, new_value)
-                    .otherwise(F.col('Provincias')))
-    df7 = df6.withColumn('Provincias', update_func)
+for prov, comunidad in dict.items(u.dict):
+    update_func = F.when(F.col('Provincias') == prov, comunidad.nombre).otherwise(F.col("col2"))
+    df6 = df6.withColumn('Provincias', update_func)
 
+df6.show()
 
-df7.show()
-
-
-
-class Util:
-
-	an = CCAA('andalucia', 'Andalucía')
-	ar = CCAA('aragon', 'Aragón')
-	ast = CCAA('asturias', 'Asturias') # 'as' is reserved
-	cn = CCAA('canarias', 'Canarias')
-	cb = CCAA('cantabria', 'Cantabria')
-	cl = CCAA('castilla y leon', 'Castilla y León')
-	cm = CCAA('castilla-la mancha', 'Castilla-La Mancha')
-	ct = CCAA('catalunya', 'Cataluña')
-	ex = CCAA('extremadura', 'Extremadura')
-	ga = CCAA('galicia', 'Galicia')
-	ib = CCAA('islas baleares', 'Islas Baleares')
-	ri = CCAA('la rioja', 'La Rioja')
-	md = CCAA('comunidad de madrid', 'Comunidad de Madrid')
-	mc = CCAA('murcia', 'Región de Murcia')
-	nc = CCAA('navarra', 'Navarra')
-	pv = CCAA('pais vasco', 'País Vasco')
-	vc = CCAA('comunidad valenciana', 'Comunidad Valenciana')
-
-	ce = CCAA('ceuta', 'Ceuta')
-	ml = CCAA('melilla', 'Melilla')
-
-	dict = {
-		'alava' : pv, 'araba/alava' : pv,
-		'albacete' : cm,
-		'alicante' : vc,
-		'almeria' : an,
-		'asturias' : ast,
-		'avila' : cl,
-		'badajoz' : ex,
-		'barcelona' : ct,
-		'burgos' : cl,
-		'caceres' : ex,
-		'cadiz' : an,
-		'cantabria' : cb,
-		'castellon' : vc,
-		'ciudad real' : cm,
-		'cordoba' : an,
-		'corunya, a' : ga,
-		'cuenca' : cm,
-		'gerona' : ct,
-		'granada' : an,
-		'guadalajara' : cm,
-		'guipúzcoa' : pv,
-		'huelva' : an,
-		'huesca' : ar,
-		'baleares' : ib,
-		'jaen' : an,
-		'leon' : cl,
-		'lerida' : ct,
-		'lugo' : ga,
-		'madrid' : md,
-		'málaga' : an,
-		'murcia' : mc,
-		'navarra' : nc,
-		'orense' : ga,
-		'palencia' : cl,
-		'las palmas' : cn,
-		'pontevedra' : ga,
-		'la rioja' : ri,
-		'salamanca' : cl,
-		'segovia' : cl,
-		'sevilla' : an,
-		'soria' : cl,
-		'tarragona' : ct,
-		'santa cruz de tenerife' : cn,
-		'teruel' : ar,
-		'toledo' : cm,
-		'valencia' : vc,
-		'valladolid' : cl,
-		'vizcaya' : pv,
-		'zamora' : cl,
-		'zaragoza' : ar
-		# TODO ceuta and melilla
-	}
 #Convierto las provincias a comunidades
 #df6 = df5.filter(df5['Periodo'] > 2019).show()
 

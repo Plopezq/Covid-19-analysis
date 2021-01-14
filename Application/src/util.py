@@ -92,7 +92,7 @@ class Util:
 		'zaragoza' : ar
 		# TODO ceuta and melilla
 	}
-	
+
 	def getCCAA(self, provincia):
 		if provincia not in self.dict:
 			return CCAA('ERROR', 'ERROR')
