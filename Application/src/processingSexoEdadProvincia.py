@@ -38,7 +38,7 @@ dataSetPoblacion = dataSetPoblacion.withColumnRenamed("Provincias", "Comunidades
 
 dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == 'andalucia').show()
 
-
+dataSetPoblacion.where(col("Comunidades") == 'andalucia').where(col("Edad") == "0 anyos").show()
 
 
 
@@ -72,7 +72,7 @@ dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == 'andalucia').show()
 
 
 
-dfaux.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("../dataSetsCleans/clean_sexo_edad_ccaa_anyo.csv")
+#dfaux.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("../dataSetsCleans/clean_sexo_edad_ccaa_anyo.csv")
 
 
 #df2020.show() #Para mostrarlo por pantalla
