@@ -21,30 +21,59 @@ df = spark.read.csv("../dataSetsCleans/clean_sexo_edad_provincia_anyo.csv",heade
 
 #Adapto el dataSet para poderlo tratar
 #Elimino los puntos
-df2 = df.withColumn('Total', translate('Total', '.', ''))
+df = df.withColumn('Total', translate('Total', '.', ''))
 #Casteo la comlumna de total
-df3 = df2.withColumn("Total",df2["Total"].cast(DoubleType()))
+df = df.withColumn("Total",df["Total"].cast(DoubleType()))
 #Casteo el periodo para quedarme solo con el año y NO el dia y el mes
-df4 = df3.withColumn('Periodo', split(df['Periodo'], ' ').getItem(4))
-df5 = df4.withColumn("Periodo",df4["Periodo"].cast(DoubleType()))
-
-df6 = df5.filter(df5['Periodo'] > 2019) #DataSet con todas las provincias y el anyo 2020
+df = df.withColumn('Periodo', split(df['Periodo'], ' ').getItem(4))
+df = df.withColumn("Periodo",df["Periodo"].cast(DoubleType()))
+df = df.filter(df['Periodo'] > 2019) #DataSet con todas las provincias y el anyo 2020
 
 #Convierto el dataframe para que muestre las comunidades y no las provincias
-
 u = Util()
-
-# COLUMNA Provincias
 f = UserDefinedFunction(lambda x: u.getCCAA(x).nombre, StringType())
-df6 = df6.withColumn('Provincias', f(df6.Provincias))
+dataSetPoblacion = df.withColumn('Provincias', f(df.Provincias))
+dataSetPoblacion = dataSetPoblacion.withColumnRenamed("Provincias", "Comunidades")
 
-#TODO renombrar la columna
-df6.show()
+
+dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == 'andalucia').show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Convierto las provincias a comunidades
 #df6 = df5.filter(df5['Periodo'] > 2019).show()
 
-df6.coalesce(1).write.option("header", "true").option("sep", ";").csv("../dataSetsCleans/clean_sexo_edad_ccaa_anyo.csv")
+
+
+
+dfaux.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("../dataSetsCleans/clean_sexo_edad_ccaa_anyo.csv")
+
 
 #df2020.show() #Para mostrarlo por pantalla
 
