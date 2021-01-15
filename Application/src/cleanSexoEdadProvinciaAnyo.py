@@ -18,6 +18,9 @@ for line in sys.stdin: #Para cada linea
     for i in range(10):
         words[2] = words[2].replace(str(i),'')
 
+    anyos = words[1].split(' ')
+    words[1] = anyos[0]
+
     #Para eliminar el espacio inicial
     if words[2][0] == " " :
         words[2] = words[2][1:]
