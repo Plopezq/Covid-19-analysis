@@ -36,9 +36,15 @@ dataSetPoblacion = df.withColumn('Provincias', f(df.Provincias))
 dataSetPoblacion = dataSetPoblacion.withColumnRenamed("Provincias", "Comunidades")
 
 
-dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == 'andalucia').show()
+#Quito las filas donde la edad sea TOTAL para hacer un casteo correcto
+dataSetPoblacionSinTotal = dataSetPoblacion.filter(dataSetPoblacion['Edad'] != 'total')
+dataSetPoblacionSinTotal.withColumn("Edad",dataSetPoblacion["Edad"].cast(DoubleType()))
 
-dataSetPoblacion.where(col("Comunidades") == 'andalucia').where(col("Edad") == "0 anyos").show()
+#dataSetPoblacionSinTotal.show()
+#dataSetPoblacionSinTotal.printSchema()
+
+
+dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
 
 
 
