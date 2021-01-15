@@ -41,8 +41,7 @@ class Util:
 
 	tn = CCAA('total nacional', 'Total Nacional')
 
-	ce = CCAA('ceuta', 'Ceuta')
-	ml = CCAA('melilla', 'Melilla')
+	lista_CCAA = [ an, ar, ast, cn, cb, cl, cm, ct, ex, ga, ib, ri, md, mc, nc, nc, pv, vc, ce, ml, tn ]
 
 	dict = {
 		'total nacional' : tn,

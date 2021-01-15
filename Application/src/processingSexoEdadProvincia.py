@@ -35,6 +35,7 @@ f = UserDefinedFunction(lambda x: u.getCCAA(x).nombre, StringType())
 dataSetPoblacion = df.withColumn('Provincias', f(df.Provincias))
 dataSetPoblacion = dataSetPoblacion.withColumnRenamed("Provincias", "Comunidades")
 
+dataSetPoblacion = dataSetPoblacion.drop('Periodo')
 
 #Quito las filas donde la edad sea TOTAL para hacer un casteo correcto
 dataSetPoblacionSinTotal = dataSetPoblacion.filter(dataSetPoblacion['Edad'] != 'total')
@@ -44,10 +45,30 @@ dataSetPoblacionSinTotal.withColumn("Edad",dataSetPoblacion["Edad"].cast(DoubleT
 #dataSetPoblacionSinTotal.printSchema()
 
 
-dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
+# dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
 
 
+dataSetPoblacion.show()
 
+columnas = StructType([
+	StructField('ccaa', StringType(), True),
+	StructField('hombres', DoubleType(), True),
+	StructField('mujeres', DoubleType(), True)
+])
+newDataSetPoblacion = spark.createDataFrame([], columnas)
+for ccaa in u.lista_CCAA:
+	ccaa = ccaa.nombre
+
+	data_CCAA = dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == ccaa)
+	hom = data_CCAA.filter(data_CCAA['Sexo'] == 'hombres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
+	muj = data_CCAA.filter(data_CCAA['Sexo'] == 'mujeres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum()
+	amb = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum()
+
+	newDataSetPoblacion = newDataSetPoblacion.union(spark.createDataFrame([(
+		ccaa, hom, hom
+		)], columnas))
+
+newDataSetPoblacion.show()
 
 
 
