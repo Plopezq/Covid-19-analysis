@@ -46,7 +46,6 @@ dataSetPoblacion = dataSetPoblacion.drop('Periodo')
 #dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
 
 
-
 columnas = StructType([
 	# TODO cambiar tipos, NO debería ser DOUBLE
 	StructField('ccaa', StringType(), True),
@@ -78,11 +77,11 @@ for ccaa in u.lista_CCAA:
 
 	data_CCAA = dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == ccaa)
 
-	data_CCAA.show()
+	#data_CCAA.show()
 
 	# data_CCAA = data_CCAA.filter((data_CCAA['Edad'] == 'total')) | (data_CCAA['Edad'] <= 85))
 
-	data_CCAA.show()
+	#data_CCAA.show()
 
 	# data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
@@ -148,5 +147,5 @@ for ccaa in u.lista_CCAA:
 		ccaa, hom, muj, amb, t0010, t1120, t2130, t3140, t4150, t5160, t6170, t7180, t8185, t100
 		)], columnas))
 
-newDataSetPoblacion.show()
-newDataSetPoblacion.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("newDataSetPoblacion")
+#newDataSetPoblacion.show()
+newDataSetPoblacion.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("../finalDataSets/newDataSetPoblacion")

@@ -45,8 +45,8 @@ dataSet = dataSet.withColumnRenamed("sum(num_casos)", "num_casos")
 dataSet = dataSet.drop("sum(num_casos_prueba_pcr)").drop("sum(num_casos_prueba_test_ac)").drop("sum(num_casos_prueba_ag)").drop("sum(num_casos_prueba_elisa)").drop("sum(num_casos_prueba_desconocida)")
 
 
-dataSet.show()
-#dataSet.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
+#dataSet.show()
+dataSet.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("../finalDataSets/dataSetCasos")
 
 #dataSetPoblacionSinTotal.show()
 #dataSetPoblacionSinTotal.printSchema()
