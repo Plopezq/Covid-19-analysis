@@ -76,7 +76,7 @@ class Util:
 		'madrid' : md, 'm' : md,
 		'malaga' : an, 'ma' : an,
 		'murcia' : mc, 'mu' : mc,
-		'navarra' : nc, 'na' : nc,
+		'navarra' : nc, 'na' : nc, 'nc' : nc,
 		'orense' : ga, 'ourense' : ga, 'or' : ga,
 		'palencia' : cl, 'p' : cl,
 		'las palmas' : cn, 'palmas, las' : cn, 'gc' : cn,
@@ -96,7 +96,7 @@ class Util:
 		'zamora' : cl, 'za' : cl,
 		'zaragoza' : ar, 'z' : ar,
 		'ceuta' : ce, 'ce' : ce,
-		'melilla': ml, 'ml' : ml,
+		'melilla': ml, 'me' : ml,
 	}
 
 	def getCCAA(self, provincia):

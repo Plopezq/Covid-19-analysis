@@ -39,14 +39,16 @@ f = UserDefinedFunction(lambda x: u.getCCAA(x).nombre, StringType())
 dataSet = df.withColumn('provincia_iso', f(df.provincia_iso))
 
 dataSet = dataSet.withColumnRenamed("provincia_iso", "Comunidad")
+dataSet = dataSet.groupBy("Comunidad").sum()
+
+dataSet = dataSet.withColumnRenamed("sum(num_casos)", "num_casos")
+dataSet = dataSet.drop("sum(num_casos_prueba_pcr)").drop("sum(num_casos_prueba_test_ac)").drop("sum(num_casos_prueba_ag)").drop("sum(num_casos_prueba_elisa)").drop("sum(num_casos_prueba_desconocida)")
 
 
-
-#dataSetPoblacionSinTotal.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
+dataSet.show()
+#dataSet.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
 
 #dataSetPoblacionSinTotal.show()
 #dataSetPoblacionSinTotal.printSchema()
 
 #dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
-
-dataSet.groupBy("Comunidad").sum().show()
