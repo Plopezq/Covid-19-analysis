@@ -39,16 +39,17 @@ dataSetPoblacion = dataSetPoblacion.drop('Periodo')
 
 #Quito las filas donde la edad sea TOTAL para hacer un casteo correcto
 dataSetPoblacionSinTotal = dataSetPoblacion.filter(dataSetPoblacion['Edad'] != 'total')
-dataSetPoblacionSinTotal.withColumn("Edad",dataSetPoblacion["Edad"].cast(DoubleType()))
+dataSetPoblacionSinTotal = dataSetPoblacionSinTotal.withColumn("Edad",dataSetPoblacion["Edad"].cast(DoubleType()))
+
+#dataSetPoblacionSinTotal.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
 
 #dataSetPoblacionSinTotal.show()
 #dataSetPoblacionSinTotal.printSchema()
 
+#dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
 
-# dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
 
-
-dataSetPoblacion.show()
+dataSetPoblacionSinTotal.show()
 
 columnas = StructType([
 	# TODO cambiar tipos, NO debería ser DOUBLE
@@ -65,59 +66,88 @@ columnas = StructType([
 	StructField('61-70', DoubleType(), True),
 	StructField('71-80', DoubleType(), True),
 	StructField('81-85', DoubleType(), True),
+	StructField('100', DoubleType(), True),
 ])
 
 # dataSetPoblacion.show().show()
 
-dataSetPoblacion.show()
+#dataSetPoblacionSinTotal.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
 
 newDataSetPoblacion = spark.createDataFrame([], columnas)
 for ccaa in u.lista_CCAA:
 	ccaa = ccaa.nombre
 
-	data_CCAA = dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == ccaa)
-	hom = data_CCAA.filter(data_CCAA['Sexo'] == 'hombres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
-	muj = data_CCAA.filter(data_CCAA['Sexo'] == 'mujeres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
-	amb = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
+	data_CCAA = dataSetPoblacionSinTotal.filter(dataSetPoblacion['Comunidades'] == ccaa) #Saco esa comunidad en especifico
+	#data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
-	data_CCAA.show()
+	hom = data_CCAA.filter(data_CCAA['Sexo'] == 'hombres').filter(data_CCAA['Edad'] == 'total').groupBy("Edad", "Sexo").sum()
+	hom = hom.groupBy().sum().collect()[0][0]
+	muj = data_CCAA.filter(data_CCAA['Sexo'] == 'mujeres').filter(data_CCAA['Edad'] == 'total').groupBy("Edad", "Sexo").sum()
+	muj = muj.groupBy().sum().collect()[0][0]
+	amb = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos').filter(data_CCAA['Edad'] == 'total').groupBy("Edad", "Sexo").sum()
+	amb = amb.groupBy().sum().collect()[0][0]
 
-	data_CCAA = data_CCAA.filter(data_CCAA['Edad'] != 'total')
+
 	data_CCAA = data_CCAA.filter(data_CCAA['Sexo'] != 'ambos sexos')
+	#data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
-	t0010 = data_CCAA.filter(data_CCAA['Edad'] <= 10).groupBy().sum().collect()[0][0]
-	data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 10)
 
-	t1120 = data_CCAA.filter(data_CCAA['Edad'] <= 20).groupBy().sum().collect()[0][0]
-        data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 20)
+#TRAMOS DE EDADES
+	t0010 = data_CCAA.filter(data_CCAA['Edad'] >= 0).filter(data_CCAA['Edad'] <= 10).groupBy("Edad", "Sexo").sum()
+	#t0010.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "0-10"+ str(ccaa))
+	t0010 = t0010.groupBy().sum().collect()[0][0]
 
-	t2130 = data_CCAA.filter(data_CCAA['Edad'] <= 30).groupBy().sum().collect()[0][0]
-        data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 30)
 
-	t3140 = data_CCAA.filter(data_CCAA['Edad'] <= 40).groupBy().sum().collect()[0][0]
-        data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 40)
+	t1120 = data_CCAA.filter(data_CCAA['Edad'] >= 11).filter(data_CCAA['Edad'] <= 20).groupBy("Edad", "Sexo").sum()
+	#t1120.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "11-20"+ str(ccaa))
+	t1120 = t1120.groupBy().sum().collect()[0][0]
 
-	t4150 = data_CCAA.filter(data_CCAA['Edad'] <= 50).groupBy().sum().collect()[0][0]
-        data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 50)
 
-	t5160 = data_CCAA.filter(data_CCAA['Edad'] <= 60).groupBy().sum().collect()[0][0]
-        data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 60)
+	t2130 = data_CCAA.filter(data_CCAA['Edad'] >= 21).filter(data_CCAA['Edad'] <= 30).groupBy("Edad", "Sexo").sum()
+	#t2130.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "21-30"+ str(ccaa))
+	t2130 = t2130.groupBy().sum().collect()[0][0]
 
-	t6170 = data_CCAA.filter(data_CCAA['Edad'] <= 70).groupBy().sum().collect()[0][0]
-        data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 70)
 
-	t7180 = data_CCAA.filter(data_CCAA['Edad'] <= 80).groupBy().sum().collect()[0][0]
-        data_CAA = data_CCAA.filter(data_CCAA['Edad'] > 80)
+	t3140 = data_CCAA.filter(data_CCAA['Edad'] >= 31).filter(data_CCAA['Edad'] <= 40).groupBy("Edad", "Sexo").sum()
+	#t3140.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "31-40"+ str(ccaa))
+	t3140 = t3140.groupBy().sum().collect()[0][0]
 
-	t8185 = data_CCAA.filter(data_CCAA['Edad'] <= 85).groupBy().sum().collect()[0][0]
 
-	# newDataSetPoblacion.show().show()
+	t4150 = data_CCAA.filter(data_CCAA['Edad'] >= 41).filter(data_CCAA['Edad'] <= 50).groupBy("Edad", "Sexo").sum()
+	#t4150.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "41-50"+ str(ccaa))
+	t4150 = t4150.groupBy().sum().collect()[0][0]
+
+
+	t5160 = data_CCAA.filter(data_CCAA['Edad'] >= 51).filter(data_CCAA['Edad'] <= 60).groupBy("Edad", "Sexo").sum()
+	#t5160.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "51-60"+ str(ccaa))
+	t5160 = t5160.groupBy().sum().collect()[0][0]
+
+
+	t6170 = data_CCAA.filter(data_CCAA['Edad'] >= 61).filter(data_CCAA['Edad'] <= 70).groupBy("Edad", "Sexo").sum()
+	#t6170.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "61-70"+ str(ccaa))
+	t6170 = t6170.groupBy().sum().collect()[0][0]
+
+	t7180 = data_CCAA.filter(data_CCAA['Edad'] >= 71).filter(data_CCAA['Edad'] <= 80).groupBy("Edad", "Sexo").sum()
+	#t7180.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "71-80"+ str(ccaa))
+	t7180 = t7180.groupBy().sum().collect()[0][0]
+
+
+	t8185 = data_CCAA.filter(data_CCAA['Edad'] >= 81).filter(data_CCAA['Edad'] <= 85).groupBy("Edad", "Sexo").sum()
+	#t8185.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "80+"+ str(ccaa))
+	t8185 = t8185.groupBy().sum().collect()[0][0]
+
+
+	t100 = data_CCAA.filter(data_CCAA['Edad'] > 85).groupBy("Edad", "Sexo").sum()
+	#t100.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "100")
+	t100 = t100.groupBy().sum().collect()[0][0]
+
 
 	newDataSetPoblacion = newDataSetPoblacion.union(spark.createDataFrame([(
-		ccaa, hom, muj, amb, t0010, t1120, t2130, t3140, t4150, t5160, t6170, t7180, t8185
+		ccaa, hom, muj, amb, t0010, t1120, t2130, t3140, t4150, t5160, t6170, t7180, t8185, t100
 		)], columnas))
 
-newDataSetPoblacion.show()
+newDataSetPoblacion.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("newDataSetPoblacion")
+
 
 
 
