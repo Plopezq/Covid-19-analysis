@@ -56,7 +56,9 @@
 								<div class="wrapper">
 									<div class="inner">
 										<h3 class="major">How to use</h3>
-										<p>Morbi mattis mi consectetur tortor elementum, varius pellentesque velit convallis. Aenean tincidunt lectus auctor mauris maximus, ac scelerisque ipsum tempor. Duis vulputate ex et ex tincidunt, quis lacinia velit aliquet. Duis non efficitur nisi, id malesuada justo. Maecenas sagittis felis ac sagittis semper. Curabitur purus leo donec vel dolor at arcu tincidunt bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce ut aliquet justo. Donec id neque ipsum. Integer eget ultricies odio. Nam vel ex a orci fringilla tincidunt. Aliquam eleifend ligula non velit accumsan cursus. Etiam ut gravida sapien.</p>
+										First of all, we need:
+										<li><a href = "https://aws.amazon.com/es/free/?trk=ps_a134p000003yhdnAAA&trkCampaign=acq_paid_search_brand&sc_channel=ps&sc_campaign=acquisition_IBERIA&sc_publisher=google&sc_category=core&sc_country=IBERIA&sc_geo=EMEA&sc_outcome=Acquisition&sc_detail=aws%20account&sc_content=Account_e&sc_matchtype=e&sc_segment=455709741582&sc_medium=ACQ-P|PS-GO|Brand|Desktop|SU|AWS|Core|IBERIA|EN|Text&s_kwcid=AL!4422!3!455709741582!e!!g!!aws%20account&ef_id=Cj0KCQiA3Y-ABhCnARIsAKYDH7s6UdLf3-_lW63tPmB6ohnHp3va_O0kWntTnypvRvwdX7A4BhVJ924aAucvEALw_wcB:G:s&s_kwcid=AL!4422!3!455709741582!e!!g!!aws%20account&all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc">AWS(Amazon Web Services) account</a> to launch an instance.</li>
+										<li>Linux OS or Mac OS to connect the remote instance (in case you are using Windows, you can download a VM).</li>
 									</div>
 								</div>
 							</section>
@@ -64,9 +66,11 @@
 							<section id = "step1">
 								<div class="wrapper">
 									<div class="inner">
-										<h3 class="major">Step 1</h3>
-										<p>Morbi mattis mi consectetur tortor elementum, varius pellentesque velit convallis. Aenean tincidunt lectus auctor mauris maximus, ac scelerisque ipsum tempor. Duis vulputate ex et ex tincidunt, quis lacinia velit aliquet. Duis non efficitur nisi, id malesuada justo. Maecenas sagittis felis ac sagittis semper. Curabitur purus leo donec vel dolor at arcu tincidunt bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce ut aliquet justo. Donec id neque ipsum. Integer eget ultricies odio. Nam vel ex a orci fringilla tincidunt. Aliquam eleifend ligula non velit accumsan cursus. Etiam ut gravida sapien.</p>
-										<code>Add code here...</code>
+										<h3 class="major">Step 1. Launch an instance m4.4xlarge.</h3>
+										<p>Assure you have selected “Ubuntu Server” as AMI and then choose m4.4xlarge as instance type.</p>
+										<p>Finally, connect the instance to the MV through SSH command: </p>
+										<pre><code># ssh -i "keyPairFile.pem" ubuntu@PublicIP
+$ ssh -i "keypair.pem" ubuntu@31.145.32.255</code></pre>
 									</div>
 								</div>
 							</section>
@@ -74,9 +78,14 @@
 							<section id = "step2">
 								<div class="wrapper">
 									<div class="inner">
-										<h3 class="major">Step 2</h3>
-										<p>Morbi mattis mi consectetur tortor elementum, varius pellentesque velit convallis. Aenean tincidunt lectus auctor mauris maximus, ac scelerisque ipsum tempor. Duis vulputate ex et ex tincidunt, quis lacinia velit aliquet. Duis non efficitur nisi, id malesuada justo. Maecenas sagittis felis ac sagittis semper. Curabitur purus leo donec vel dolor at arcu tincidunt bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce ut aliquet justo. Donec id neque ipsum. Integer eget ultricies odio. Nam vel ex a orci fringilla tincidunt. Aliquam eleifend ligula non velit accumsan cursus. Etiam ut gravida sapien.</p>
-										<code>Add code here...</code>
+										<h3 class="major">Step 2. Download dataset and upload to your new VM. </h3>
+										Download the followings <a href="generic.html#dataset">datasets</a> through the urls included on this web:
+											<li>sexo_edad_provincia_anyo.csv</li>
+											<li>casos_hosp_uci_def_sexo_edad_provres.csv</li>
+										<br>You also need the Application folder located on our <a href="https://github.com/Plopezq/Covid-19-analysis/tree/main/Application">Github Repository.</a>
+										<li>Application</li>
+										<br>Now its time to upload these files to your bucket using the following command:
+										<pre><code>$ scp -i $HOME/.ssh/keypair.pem fileName.csv ubuntu@31.145.32.255:/home/ubuntu</code></pre>
 									</div>
 								</div>
 							</section>
@@ -84,9 +93,46 @@
 							<section id = "step3">
 								<div class="wrapper">
 									<div class="inner">
-										<h3 class="major">Step 3</h3>
-										<p>Morbi mattis mi consectetur tortor elementum, varius pellentesque velit convallis. Aenean tincidunt lectus auctor mauris maximus, ac scelerisque ipsum tempor. Duis vulputate ex et ex tincidunt, quis lacinia velit aliquet. Duis non efficitur nisi, id malesuada justo. Maecenas sagittis felis ac sagittis semper. Curabitur purus leo donec vel dolor at arcu tincidunt bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce ut aliquet justo. Donec id neque ipsum. Integer eget ultricies odio. Nam vel ex a orci fringilla tincidunt. Aliquam eleifend ligula non velit accumsan cursus. Etiam ut gravida sapien.</p>
-										<code>Add code here...</code>
+										<h3 class="major">Step 3. Spark installation.</h3>
+									<!--Java-->
+										<li><b>3.1</b> Install Java:</li>
+										<pre><code>$ sudo apt-add-repository ppa:webupd8team/java
+$ sudo apt-get update
+$ sudo apt install openjdk-8-jdk</code></pre>
+									<!--Scala-->
+										<li><b>3.2</b> Install Scala:</li>
+										<pre><code>$ sudo apt install scala</code></pre>
+									<!--Python-->
+										<li><b>3.3</b> Install Python:</li>
+										<pre><code>$ sudo apt install python</code></pre>
+									<!--Spark-->
+										<li><b>3.4</b> Install Spark:</li>
+										<pre><code>$ sudo curl -O
+http://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz
+$ sudo tar xvf ./spark-2.2.0-bin-hadoop2.7.tgz
+$ sudo mkdir /usr/local/spark
+$ sudo cp -r spark-2.2.0-bin-hadoop2.7/* /usr/local/spark</code></pre>
+									<!--Configure Enviroment-->
+									<li><b>3.3</b> Configure Enviroment:
+									<br>
+									<b>a)</b> Add /usr/local/spark/bin to PATH in .profile. To do so, add the following line to the
+end of the ~/.profile file with a text editor, for example with vi ~/.profile. <pre><code>export PATH="$PATH:/usr/local/spark/bin"</code></pre>
+									
+									<b>b)</b> Execute source ~/.profile to update PATH in your current session
+									</li>
+									<br>
+									<b>c)</b> Include the internal hostname and IP to /etc/hosts
+with a text editor, for example with <pre><code>sudo vi /etc/host</code></pre>
+									</li>
+									</div>
+								</div>
+							</section>
+							<section id = "step4">
+								<div class="wrapper">
+									<div class="inner">
+										<h3 class="major">Step 4. Run the application.</h3>
+										Commands:
+										<pre><code>Add code here...</code></pre>
 									</div>
 								</div>
 							</section>
