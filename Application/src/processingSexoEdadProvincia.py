@@ -69,26 +69,32 @@ columnas = StructType([
 
 #dataSetPoblacionSinTotal.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
 
+# dataSetPoblacion = dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 85)
+
 newDataSetPoblacion = spark.createDataFrame([], columnas)
+
 for ccaa in u.lista_CCAA:
 	ccaa = ccaa.nombre
 
-	data_CCAA = dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == ccaa) #Saco esa comunidad en especifico
-	data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
+	data_CCAA = dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == ccaa)
+
+	data_CCAA.show()
+
+	# data_CCAA = data_CCAA.filter((data_CCAA['Edad'] == 'total')) | (data_CCAA['Edad'] <= 85))
+
+	data_CCAA.show()
+	
+	# data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
 	hom = data_CCAA.filter(data_CCAA['Sexo'] == 'hombres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
 	muj = data_CCAA.filter(data_CCAA['Sexo'] == 'mujeres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
 	amb = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
 
-
-	data_CCAA = data_CCAA.filter(data_CCAA['Sexo'] != 'ambos sexos')
+	data_CCAA = data_CCAA.filter(data_CCAA['Edad'] != 'total')
+	data_CCAA = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos')
+	
 	#data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
-	#Quito las filas donde la edad sea TOTAL para hacer un casteo correcto
-	dataSetPoblacionSinTotal = dataSetPoblacion.filter(dataSetPoblacion['Edad'] != 'total')
-	dataSetPoblacionSinTotal = dataSetPoblacionSinTotal.withColumn("Edad",dataSetPoblacion["Edad"].cast(DoubleType()))
-
-#TRAMOS DE EDADES
 	t0010 = data_CCAA.filter(data_CCAA['Edad'] >= 0).filter(data_CCAA['Edad'] <= 10).groupBy("Edad", "Sexo").sum()
 	#t0010.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CAA" + "0-10"+ str(ccaa))
 	t0010 = t0010.groupBy().sum().collect()[0][0]
