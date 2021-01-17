@@ -13,7 +13,7 @@ from pyspark.sql.types import StringType
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
 
-conf = SparkConf().setMaster('local[*]').setAppName('P3_spark.py')
+conf = SparkConf().setMaster('local[8]').setAppName('P3_spark.py')
 sc = SparkContext(conf = conf)
 
 spark = SparkSession(sc)
@@ -83,7 +83,7 @@ for ccaa in u.lista_CCAA:
 	# data_CCAA = data_CCAA.filter((data_CCAA['Edad'] == 'total')) | (data_CCAA['Edad'] <= 85))
 
 	data_CCAA.show()
-	
+
 	# data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
 	hom = data_CCAA.filter(data_CCAA['Sexo'] == 'hombres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
@@ -92,7 +92,7 @@ for ccaa in u.lista_CCAA:
 
 	data_CCAA = data_CCAA.filter(data_CCAA['Edad'] != 'total')
 	data_CCAA = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos')
-	
+
 	#data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
 	t0010 = data_CCAA.filter(data_CCAA['Edad'] >= 0).filter(data_CCAA['Edad'] <= 10).groupBy("Edad", "Sexo").sum()

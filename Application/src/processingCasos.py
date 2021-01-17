@@ -14,7 +14,7 @@ from pyspark.sql.types import StringType
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
 
-conf = SparkConf().setMaster('local[*]').setAppName('P3_spark.py')
+conf = SparkConf().setMaster('local[8]').setAppName('P3_spark.py')
 sc = SparkContext(conf = conf)
 
 spark = SparkSession(sc)
