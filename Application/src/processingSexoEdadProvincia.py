@@ -37,9 +37,6 @@ dataSetPoblacion = dataSetPoblacion.withColumnRenamed("Provincias", "Comunidades
 
 dataSetPoblacion = dataSetPoblacion.drop('Periodo')
 
-#Quito las filas donde la edad sea TOTAL para hacer un casteo correcto
-dataSetPoblacionSinTotal = dataSetPoblacion.filter(dataSetPoblacion['Edad'] != 'total')
-dataSetPoblacionSinTotal = dataSetPoblacionSinTotal.withColumn("Edad",dataSetPoblacion["Edad"].cast(DoubleType()))
 
 #dataSetPoblacionSinTotal.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
 
@@ -49,7 +46,6 @@ dataSetPoblacionSinTotal = dataSetPoblacionSinTotal.withColumn("Edad",dataSetPob
 #dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
 
 
-dataSetPoblacionSinTotal.show()
 
 columnas = StructType([
 	# TODO cambiar tipos, NO debería ser DOUBLE
@@ -77,20 +73,20 @@ newDataSetPoblacion = spark.createDataFrame([], columnas)
 for ccaa in u.lista_CCAA:
 	ccaa = ccaa.nombre
 
-	data_CCAA = dataSetPoblacionSinTotal.filter(dataSetPoblacion['Comunidades'] == ccaa) #Saco esa comunidad en especifico
-	#data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
+	data_CCAA = dataSetPoblacion.filter(dataSetPoblacion['Comunidades'] == ccaa) #Saco esa comunidad en especifico
+	data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
-	hom = data_CCAA.filter(data_CCAA['Sexo'] == 'hombres').filter(data_CCAA['Edad'] == 'total').groupBy("Edad", "Sexo").sum()
-	hom = hom.groupBy().sum().collect()[0][0]
-	muj = data_CCAA.filter(data_CCAA['Sexo'] == 'mujeres').filter(data_CCAA['Edad'] == 'total').groupBy("Edad", "Sexo").sum()
-	muj = muj.groupBy().sum().collect()[0][0]
-	amb = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos').filter(data_CCAA['Edad'] == 'total').groupBy("Edad", "Sexo").sum()
-	amb = amb.groupBy().sum().collect()[0][0]
+	hom = data_CCAA.filter(data_CCAA['Sexo'] == 'hombres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
+	muj = data_CCAA.filter(data_CCAA['Sexo'] == 'mujeres').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
+	amb = data_CCAA.filter(data_CCAA['Sexo'] == 'ambos sexos').filter(data_CCAA['Edad'] == 'total').groupBy('Sexo').sum().collect()[0][1]
 
 
 	data_CCAA = data_CCAA.filter(data_CCAA['Sexo'] != 'ambos sexos')
 	#data_CCAA.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("data_CCAA" + str(ccaa))
 
+	#Quito las filas donde la edad sea TOTAL para hacer un casteo correcto
+	dataSetPoblacionSinTotal = dataSetPoblacion.filter(dataSetPoblacion['Edad'] != 'total')
+	dataSetPoblacionSinTotal = dataSetPoblacionSinTotal.withColumn("Edad",dataSetPoblacion["Edad"].cast(DoubleType()))
 
 #TRAMOS DE EDADES
 	t0010 = data_CCAA.filter(data_CCAA['Edad'] >= 0).filter(data_CCAA['Edad'] <= 10).groupBy("Edad", "Sexo").sum()
@@ -146,6 +142,7 @@ for ccaa in u.lista_CCAA:
 		ccaa, hom, muj, amb, t0010, t1120, t2130, t3140, t4150, t5160, t6170, t7180, t8185, t100
 		)], columnas))
 
+newDataSetPoblacion.show()
 newDataSetPoblacion.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("newDataSetPoblacion")
 
 
