@@ -85,7 +85,7 @@ class Util:
 		'salamanca' : cl,
 		'segovia' : cl,
 		'sevilla' : an,
-		'soria' : cl,
+		'soria' : cl, 'so' : cl,
 		'tarragona' : ct,
 		'santa cruz de tenerife' : cn,
 		'teruel' : ar,
@@ -95,7 +95,6 @@ class Util:
 		'vizcaya' : pv, 'bizkaia' : pv,
 		'zamora' : cl,
 		'zaragoza' : ar,
-		# TODO ceuta and melilla
 		'ceuta' : ce,
 		'melilla': ml
 	}
