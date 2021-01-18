@@ -1,5 +1,12 @@
 # Covid-19-analysis
 
+
+## Members:
+
+* Pablo López Martín
+* Juan Tecedor Roa
+* Elena Fernandez Jiménez
+
 ## Introduction
 This project combines big data techniques and cloud computing to analyze covid-19 cases data in Spain in short period of time.
 
@@ -8,7 +15,7 @@ it by CCAA (autonomous communities) and add up the numbers. After the processing
 
 These correlations do not imply causation.
 
-[Main Site](https://plopezq.github.io/Covid-19-analysis/index.html)
+[Main Site -- WEBPAGE](https://plopezq.github.io/Covid-19-analysis/index.html)
 
 ## How to run this program
 First of all install all of the required software: python, spark, java, scala, numpy, matplotlib and pandas.
@@ -31,4 +38,6 @@ run run.sh
 TODO
 
 ## Results
-[Results](https://plopezq.github.io/Covid-19-analysis/results.html)
+In the WebPage we have upload some images with the output of the programm
+
+[Click Here](https://plopezq.github.io/Covid-19-analysis/results.html)
