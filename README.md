@@ -33,7 +33,7 @@ cd into /Application/src/
 ```
 
 ```
-run run.sh
+sh run.sh
 ```
 Now, the dataSets are ready. We only have to run the application
 
