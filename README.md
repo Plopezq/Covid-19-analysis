@@ -35,7 +35,28 @@ cd into /Application/src/
 ```
 run run.sh
 ```
-TODO
+Now, the dataSets are ready. We only have to run the application
+
+* if we have to display a chart of number of cases per community compared with population density:
+
+```
+$ python3 results.py 0
+```
+* If you want to display a chart of number of cases per community compared with population:
+
+```
+$ python3 results.py 1
+```
+* If you want to display a chart of cases by age range:
+
+```
+$ python3 results.py 2
+```
+* If you want to display a chart of Cases by community (men vs women):
+
+```
+$ python3 results.py 3
+```
 
 ## Results
 In the WebPage we have upload some images with the output of the programm
