@@ -3,6 +3,7 @@
 #Este mapper, limpia el .csv para sacar solo ANYO y PRECIO DE CIERRE
 import sys
 import re
+from util import *
 import os
 import pandas as pd
 import numpy as np
@@ -58,9 +59,7 @@ COMUNIDAD_EXTENSION_POBLACION['poblacion'].astype('int')
 aux = pd.merge(CASOS_COMUNIDAD, COMUNIDAD_EXTENSION_POBLACION, on='Comunidad')
 aux['hab/km2'] = aux['poblacion'] / aux['km2']
 aux['casos/poblacion'] = aux['num_casos'] / aux['poblacion']
-print(aux)
-
-
+#print(aux)
 
 
 #NUMERO DE CASOS POR COMUNIDAD EN COMPARACION CON HAB/KM2
@@ -78,6 +77,7 @@ plt.show()'''
 
 
 '''
+#DENSIDAD DE POBLACION versus CASOS POR HABITANTES
 x = aux['hab/km2']
 y = aux['casos/poblacion']
 plt.xlabel('hab/km2')
@@ -92,25 +92,25 @@ plt.show()
 
 
 
-
-
+'''
 #CASOS POR RANGO DE EDAD
 eje_y = ["00-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-85", "100"]
 aux = CCAA_RANGO_EDAD.drop(20,axis=0) #Quito el total nacional
-aux.plot(x= 'ccaa', y = eje_y, kind = 'line')
-#grafico = CCAA_RANGO_EDAD[eje_y].plot(marker="o")
-#grafico.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+aux.plot(x= 'ccaa', y = eje_y, kind = 'bar')
+plt.show()'''
+
+
+
+#CASOS POR COMUNIDAD --> Hombres vs mujeres
+CCAA_RANGO_EDAD.rename(columns={'ccaa': 'comunidad'}, inplace=True)
+CASOS_COMUNIDAD.rename(columns={'Comunidad': 'comunidad'}, inplace=True)
+#print(CASOS_COMUNIDAD)
+#print(CCAA_RANGO_EDAD)
+aux = pd.merge(CASOS_COMUNIDAD, CCAA_RANGO_EDAD, on='comunidad')
+print(aux)
+eje_y = ["hombres", "mujeres"]
+aux.plot(x= 'comunidad', y = eje_y, kind = 'bar')
 plt.show()
-
-
-df = pd.DataFrame({}, index=[1990, 1997, 2003, 2009, 2014])
-lines = df.plot.line()
-
-
-'''
-subset = ["EMBAJADORES", "COMILLAS", "UNIVERSIDAD", "LOS ROSALES", "ARAVACA", ]
-ax = df[subset].plot(marker="o")
-ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))'''
 
 
 
