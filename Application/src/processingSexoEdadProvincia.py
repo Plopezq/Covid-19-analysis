@@ -9,11 +9,10 @@ from pyspark.sql import functions as F
 from pyspark.sql.functions import UserDefinedFunction
 from pyspark.sql.types import StringType
 
-#import pandas as pd
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
 
-conf = SparkConf().setMaster('local[8]').setAppName('P3_spark.py')
+conf = SparkConf().setMaster('local[16]').setAppName('P3_spark.py')
 sc = SparkContext(conf = conf)
 
 spark = SparkSession(sc)
@@ -38,14 +37,6 @@ dataSetPoblacion = dataSetPoblacion.withColumnRenamed("Provincias", "Comunidades
 dataSetPoblacion = dataSetPoblacion.drop('Periodo')
 
 
-#dataSetPoblacionSinTotal.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
-
-#dataSetPoblacionSinTotal.show()
-#dataSetPoblacionSinTotal.printSchema()
-
-#dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
-
-
 columnas = StructType([
 	# TODO cambiar tipos, NO debería ser DOUBLE
 	StructField('ccaa', StringType(), True),
@@ -64,11 +55,7 @@ columnas = StructType([
 	StructField('100', DoubleType(), True),
 ])
 
-# dataSetPoblacion.show().show()
-
 #dataSetPoblacionSinTotal.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("dataSetPoblacion")
-
-# dataSetPoblacion = dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 85)
 
 newDataSetPoblacion = spark.createDataFrame([], columnas)
 
