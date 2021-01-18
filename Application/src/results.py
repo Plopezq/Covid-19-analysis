@@ -33,12 +33,12 @@ CCAA_RANGO_EDAD['61-70'].astype('int')
 CCAA_RANGO_EDAD['71-80'].astype('int')
 CCAA_RANGO_EDAD['81-85'].astype('int')
 CCAA_RANGO_EDAD['100'].astype('int')
-print(CCAA_RANGO_EDAD)
+#print(CCAA_RANGO_EDAD)
 
 
 #SEGUNDO DATASET
 dataSetCasosPath = glob.glob(dataSetsPath + 'dataSetCasos/' + '*.{}'.format('csv'))[0]
-print(dataSetCasosPath)
+#print(dataSetCasosPath)
 CASOS_COMUNIDAD = pd.read_csv(dataSetCasosPath, sep=';')
 CASOS_COMUNIDAD['num_casos'].astype('int')
 #print(CASOS_COMUNIDAD)
@@ -61,56 +61,54 @@ aux['hab/km2'] = aux['poblacion'] / aux['km2']
 aux['casos/poblacion'] = aux['num_casos'] / aux['poblacion']
 #print(aux)
 
-
-#NUMERO DE CASOS POR COMUNIDAD EN COMPARACION CON HAB/KM2
-'''
-aux.plot(x ='Comunidad', y='num_casos', kind = 'bar')#Tipo lineal con los ejes nombrados
-plt.title("Numeros de casos por comunidad")
-plt.xlabel('Comunidad')
-plt.ylabel('num_casos')
-aux.plot(x= 'Comunidad', y = 'hab/km2', kind = 'bar')
-plt.title("Densidad de poblacion por comunidad")
-plt.xlabel('Comunidad')
-plt.ylabel('Densidad')
-plt.show()'''
-#NO SE OBSERVA RELEVACION ALGUNA
-
-
-'''
-#DENSIDAD DE POBLACION versus CASOS POR HABITANTES
-x = aux['hab/km2']
-y = aux['casos/poblacion']
-plt.xlabel('hab/km2')
-plt.ylabel('casos/poblacion')
-(m, b) = np.polyfit(x, y, 1)
-yp = np.polyval([m, b], x)
-plt.plot(x, yp)
-plt.grid(True)
-plt.scatter(x,y)
-plt.show()
-'''
+if sys.argv[1] == '0':
+    #NUMERO DE CASOS POR COMUNIDAD EN COMPARACION CON HAB/KM2
+    aux.plot(x ='Comunidad', y='num_casos', kind = 'bar')#Tipo lineal con los ejes nombrados
+    plt.title("Numeros de casos por comunidad")
+    plt.xlabel('Comunidad')
+    plt.ylabel('num_casos')
+    aux.plot(x= 'Comunidad', y = 'hab/km2', kind = 'bar')
+    plt.title("Densidad de poblacion por comunidad")
+    plt.xlabel('Comunidad')
+    plt.ylabel('Densidad')
+    plt.show()
+    #NO SE OBSERVA RELEVACION ALGUNA
 
 
+if sys.argv[1] == '1':
+    #DENSIDAD DE POBLACION versus CASOS POR HABITANTES
+    x = aux['hab/km2']
+    y = aux['casos/poblacion']
+    plt.xlabel('hab/km2')
+    plt.ylabel('casos/poblacion')
+    (m, b) = np.polyfit(x, y, 1)
+    yp = np.polyval([m, b], x)
+    plt.plot(x, yp)
+    plt.grid(True)
+    plt.scatter(x,y)
+    plt.show()
 
-'''
-#CASOS POR RANGO DE EDAD
-eje_y = ["00-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-85", "100"]
-aux = CCAA_RANGO_EDAD.drop(20,axis=0) #Quito el total nacional
-aux.plot(x= 'ccaa', y = eje_y, kind = 'bar')
-plt.show()'''
+
+if sys.argv[1] == '2':
+    #CASOS POR RANGO DE EDAD
+    aux = CCAA_RANGO_EDAD.drop(20,axis=0) #Quito el total nacional
+    aux['+85'] = aux['100']
+    eje_y = ["00-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-85", "+85"]
+    aux.plot(x= 'ccaa', y = eje_y, kind = 'bar')
+    plt.show()
 
 
-
-#CASOS POR COMUNIDAD --> Hombres vs mujeres
-CCAA_RANGO_EDAD.rename(columns={'ccaa': 'comunidad'}, inplace=True)
-CASOS_COMUNIDAD.rename(columns={'Comunidad': 'comunidad'}, inplace=True)
-#print(CASOS_COMUNIDAD)
-#print(CCAA_RANGO_EDAD)
-aux = pd.merge(CASOS_COMUNIDAD, CCAA_RANGO_EDAD, on='comunidad')
-print(aux)
-eje_y = ["hombres", "mujeres"]
-aux.plot(x= 'comunidad', y = eje_y, kind = 'bar')
-plt.show()
+if sys.argv[1] == '3':
+    #CASOS POR COMUNIDAD --> Hombres vs mujeres
+    CCAA_RANGO_EDAD.rename(columns={'ccaa': 'comunidad'}, inplace=True)
+    CASOS_COMUNIDAD.rename(columns={'Comunidad': 'comunidad'}, inplace=True)
+    #print(CASOS_COMUNIDAD)
+    #print(CCAA_RANGO_EDAD)
+    aux = pd.merge(CASOS_COMUNIDAD, CCAA_RANGO_EDAD, on='comunidad')
+    print(aux)
+    eje_y = ["hombres", "mujeres"]
+    aux.plot(x= 'comunidad', y = eje_y, kind = 'bar')
+    plt.show()
 
 
 

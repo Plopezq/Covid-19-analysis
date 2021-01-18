@@ -1,2 +1,0 @@
-comunidades_extension.csv: comunidad, extensión
-sexo_edad_provincia_anyo: (filter only 2020) comunidad, age groups in percentages, population by gender, total population

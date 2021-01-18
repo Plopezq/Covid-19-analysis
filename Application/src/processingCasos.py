@@ -8,13 +8,12 @@ from pyspark.sql.functions import *
 from pyspark.sql import functions as F
 from pyspark.sql.functions import UserDefinedFunction
 from pyspark.sql.types import StringType
-#TODO : Eliminar basura importada que al final no usamos
-#import pandas as pd
+
 
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
 
-conf = SparkConf().setMaster('local[8]').setAppName('P3_spark.py')
+conf = SparkConf().setMaster('local[16]').setAppName('P3_spark.py')
 sc = SparkContext(conf = conf)
 
 spark = SparkSession(sc)
@@ -47,8 +46,3 @@ dataSet = dataSet.drop("sum(num_casos_prueba_pcr)").drop("sum(num_casos_prueba_t
 
 #dataSet.show()
 dataSet.coalesce(1).write.mode("overwrite").option("header", "true").option("sep", ";").csv("../finalDataSets/dataSetCasos")
-
-#dataSetPoblacionSinTotal.show()
-#dataSetPoblacionSinTotal.printSchema()
-
-#dataSetPoblacion.filter(dataSetPoblacion['Edad'] > 5).filter(dataSetPoblacion['Edad'] < 10).show()
