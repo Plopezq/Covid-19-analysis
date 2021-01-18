@@ -68,8 +68,8 @@
 							<section id = "step1">
 								<div class="wrapper">
 									<div class="inner">
-										<h3 class="major">Step 1. Launch an instance m4.4xlarge.</h3>
-										<p>Assure you have selected “Ubuntu Server” as AMI and then choose m4.4xlarge as instance type.</p>
+										<h3 class="major">Step 1. Launch an instance m4.xlarge.</h3>
+										<p>Assure you have selected “Ubuntu Server” as AMI and then choose m4.xlarge as instance type.</p>
 										<p>Finally, connect the instance to the MV through SSH command: </p>
 										<pre><code># ssh -i "keyPairFile.pem" ubuntu@PublicIP
 $ ssh -i "keypair.pem" ubuntu@31.145.32.255</code></pre>
@@ -83,7 +83,7 @@ $ ssh -i "keypair.pem" ubuntu@31.145.32.255</code></pre>
 										<h3 class="major">Step 2. Download dataset and upload to your new VM. </h3>
 										Download the followings <a href="generic.html#dataset">datasets</a> through the urls included on this web:
 											<li>sexo_edad_provincia_anyo.csv</li>
-											<li>casos_hosp_uci_def_sexo_edad_provres.csv</li>
+											<li>casos_diagnostico_provincia.csv</li>
 										<br>You also need the Application folder located on our <a href="https://github.com/Plopezq/Covid-19-analysis/tree/main/Application">Github Repository.</a>
 										<li>Application</li>
 										<br>Now it is time to upload these files to your bucket (previously created with Amazon S3) using the following command:
@@ -114,18 +114,28 @@ http://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz
 $ sudo tar xvf ./spark-2.2.0-bin-hadoop2.7.tgz
 $ sudo mkdir /usr/local/spark
 $ sudo cp -r spark-2.2.0-bin-hadoop2.7/* /usr/local/spark</code></pre>
-									<!--Configure Enviroment-->
-									<li><b>3.5</b> Configure the enviroment:
-									<br>
-									<b>a)</b> Add /usr/local/spark/bin to PATH in .profile. To do so, add the following line to the
-end of the ~/.profile file with a text editor, for example with vi ~/.profile. <pre><code>export PATH="$PATH:/usr/local/spark/bin"</code></pre>
+									<!--Pandas-->
+										<li><b>3.5</b> Install Pandas:</li>
+										<pre><code>$ pip3 install pandas</code></pre>
+									<!--Matplot-->
+										<li><b>3.6</b> Install Matplotlib:</li>
+										<pre><code>$ pip3 install matplotlib</code></pre>
+									<!--Matplot-->
+										<li><b>3.7</b> Install Numpy:</li>
+										<pre><code>$ pip3 install numpy</code></pre>
 									
-									<b>b)</b> Execute source ~/.profile to update PATH in your current session
-									</li>
-									<br>
-									<b>c)</b> Include the internal hostname and IP to /etc/hosts
+									<!--Configure Enviroment-->
+										<li><b>3.8</b> Configure the enviroment:
+										<br>
+										<b>a)</b> Add /usr/local/spark/bin to PATH in .profile. To do so, add the following line to the
+end of the ~/.profile file with a text editor, for example with vi ~/.profile. <pre><code>export PATH="$PATH:/usr/local/spark/bin"</code></pre>
+										
+										<b>b)</b> Execute source ~/.profile to update PATH in your current session
+										</li>
+										<br>
+										<b>c)</b> Include the internal hostname and IP to /etc/hosts
 with a text editor, for example with <pre><code>$ sudo vi /etc/host</code></pre>
-									</li>
+										</li>
 									</div>
 								</div>
 							</section>
