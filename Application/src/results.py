@@ -7,11 +7,18 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import glob
 
 #Creo los dataframes de pandas, uno por cada archivo
 #PRIMER DATASET
-newDataSetPoblacion_ds = os.listdir("../finalDataSets/newDataSetPoblacion")[2]
-CCAA_RANGO_EDAD = pd.read_csv("../finalDataSets/newDataSetPoblacion/" + newDataSetPoblacion_ds, sep=';')
+# newDataSetPoblacion_ds = os.listdir("../finalDataSets/newDataSetPoblacion/*.csv")
+
+dataSetsPath = '../finalDataSets/'
+
+dataSetPoblacionPath = glob.glob(dataSetsPath + 'newDataSetPoblacion/' + '*.{}'.format('csv'))[0]
+
+CCAA_RANGO_EDAD = pd.read_csv(dataSetPoblacionPath, sep=';')
+
 CCAA_RANGO_EDAD['hombres'].astype('int')
 CCAA_RANGO_EDAD['mujeres'].astype('int')
 CCAA_RANGO_EDAD['total'].astype('int')
@@ -29,15 +36,17 @@ print(CCAA_RANGO_EDAD)
 
 
 #SEGUNDO DATASET
-dataSetCasos_ds = os.listdir("../finalDataSets/dataSetCasos")[3]
-CASOS_COMUNIDAD = pd.read_csv("../finalDataSets/dataSetCasos/" + dataSetCasos_ds, sep=';')
+dataSetCasosPath = glob.glob(dataSetsPath + 'dataSetCasos/' + '*.{}'.format('csv'))[0]
+print(dataSetCasosPath)
+CASOS_COMUNIDAD = pd.read_csv(dataSetCasosPath, sep=';')
 CASOS_COMUNIDAD['num_casos'].astype('int')
 #print(CASOS_COMUNIDAD)
 
 
 #TERCER DATASET
 comunidades_extension_poblacion_ds = "../finalDataSets/comunidades_extension_poblacion.csv"
-COMUNIDAD_EXTENSION_POBLACION = pd.read_csv(comunidades_extension_poblacion_ds, sep=';')
+extensionPath = glob.glob(dataSetsPath + '*.{}'.format('csv'))[0]
+COMUNIDAD_EXTENSION_POBLACION = pd.read_csv(extensionPath, sep=';')
 COMUNIDAD_EXTENSION_POBLACION['Comunidad'].astype('str')
 COMUNIDAD_EXTENSION_POBLACION['km2'].astype('int')
 COMUNIDAD_EXTENSION_POBLACION['poblacion'].astype('int')
