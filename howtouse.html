@@ -86,7 +86,8 @@ $ ssh -i "keypair.pem" ubuntu@31.145.32.255</code></pre>
 											<li>casos_diagnostico_provincia.csv</li>
 										<br>You also need the Application folder located on our <a href="https://github.com/Plopezq/Covid-19-analysis/tree/main/Application">Github Repository.</a>
 										<li>Application</li>
-										<br>Now it is time to upload these files to your bucket (previously created with Amazon S3) using the following command:
+										<br>
+										<p>Now it is time to upload these files to your bucket (previously created with Amazon S3) using the following command:</p>
 										<pre><code>$ scp -i $HOME/.ssh/keypair.pem fileName.csv ubuntu@31.145.32.255:/home/ubuntu</code></pre>
 									</div>
 								</div>
@@ -142,7 +143,17 @@ with a text editor, for example with <pre><code>$ sudo vi /etc/host</code></pre>
 							<section id = "step4">
 								<div class="wrapper">
 									<div class="inner">
-										<h3 class="major">Step 4. Run the application.</h3>
+										<h3 class="major">Step 4. Execute run.sh</h3>
+										<p> We’ve almost got to the interesting part, but first run the following commands:</p>
+										<pre><code>$ cd into /Application/src/
+$ sh run.sh</code></pre>
+									</div>
+								</div>
+							</section>
+							<section id = "step5">
+								<div class="wrapper">
+									<div class="inner">
+										<h3 class="major">Step 5. Run the application.</h3>
 										<p>Now it is time to try the commands to get the results:</p>
 										<li>Number of cases per community compared with population density:</li>
 										<pre><code>$ python3 results.py 0</code></pre>
@@ -155,19 +166,15 @@ with a text editor, for example with <pre><code>$ sudo vi /etc/host</code></pre>
 									</div>
 								</div>
 							</section>
-							<section id = "step4">
+							<section id = "step6">
 								<div class="wrapper">
 									<div class="inner">
-										<h3 class="major">Step 5. Investigate your results.</h3>
-										A window should appear on your screen displaying a chart like this:
+										<h3 class="major">Step 6. Investigate your results.</h3>
+										<p>A window should appear on your screen displaying a chart like this:</p>
 											<a class="image"><img src="images/ejemploejecucion.png" alt="" height="300"/></a>
-										
-										
 									</div>
 								</div>
 							</section>
-
-
 					</section>
 
 				<!-- Footer -->
