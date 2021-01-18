@@ -91,8 +91,9 @@ if sys.argv[1] == '1':
 
 if sys.argv[1] == '2':
     #CASOS POR RANGO DE EDAD
-    eje_y = ["00-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-85", "100"]
     aux = CCAA_RANGO_EDAD.drop(20,axis=0) #Quito el total nacional
+    aux['+85'] = aux['100']
+    eje_y = ["00-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-85", "+85"]
     aux.plot(x= 'ccaa', y = eje_y, kind = 'bar')
     plt.show()
 
