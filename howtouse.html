@@ -87,8 +87,10 @@ $ ssh -i "keypair.pem" ubuntu@31.145.32.255</code></pre>
 										<br>You also need the Application folder located on our <a href="https://github.com/Plopezq/Covid-19-analysis/tree/main/Application">Github Repository.</a>
 										<li>Application</li>
 										<br>
+										<li>Enter the downloaded datasets by overwriting the old ones you can find in the Application folder</li>
+										<br>
 										<p>Now it is time to upload these files to your bucket (previously created with Amazon S3) using the following command:</p>
-										<pre><code>$ scp -i $HOME/.ssh/keypair.pem fileName.csv ubuntu@31.145.32.255:/home/ubuntu</code></pre>
+										<pre><code>$ aws s3 cp Application s3://mybucket/Application --recursive</code></pre>
 									</div>
 								</div>
 							</section>
@@ -170,7 +172,7 @@ $ sh run.sh</code></pre>
 								<div class="wrapper">
 									<div class="inner">
 										<h3 class="major">Step 6. Investigate your results.</h3>
-										<p>A window should appear on your screen displaying a chart like this:</p>
+										<p>A window should appear on your screen displaying a chart like the following one:</p>
 											<a class="image"><img src="images/ejemploejecucion.png" alt="" height="300"/></a>
 									</div>
 								</div>
